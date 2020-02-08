@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, Text, Date
 
-from Conjugate import db
+from ConjugateAPI import db
 
 class Classes(db.model):
     __tablename__ = "classes"
