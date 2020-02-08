@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, Text, Date
+from sqlalchemy import Column, Integer, Text
 
 from ConjugateAPI import db
 
@@ -24,7 +24,7 @@ class Homeworks(db.model):
     user_name = Column(Text, nullable = False)
     class_id = Column(Integer, nullable = False)
     homework_title = Column(Integer, nullable = False)
-    homework_due_date = Column(Date, nullable = False)
+    homework_due_date = Column(Integer, nullable = False)
 
     def __init__(self, user_name, class_id, homework_title, homework_due_date)
         self.user_name = user_name
