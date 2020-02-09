@@ -1,8 +1,8 @@
 from sqlalchemy import Column, Integer, Text
 
-from ConjugateAPI import db
+from ConjugateAPI.routes import db
 
-class Classes(db.model):
+class Classes(db.Model):
     __tablename__ = "classes"
     class_id = Column(Integer, primary_key=True)
     class_name = Column(Text, nullable = False)
@@ -18,7 +18,7 @@ class Classes(db.model):
         self.class_building = class_building
         self.class_room_number = class_room_number
 
-class Homeworks(db.model):
+class Homeworks(db.Model):
     __tablename__ = "homeworks"
     homeworks_id = Column(Integer, primary_key=True)
     user_name = Column(Text, nullable = False)
@@ -27,7 +27,7 @@ class Homeworks(db.model):
     homework_due_date = Column(Integer, nullable = False)
     date_created = Column(Integer, nullable = False)
 
-    def __init__(self, user_name, class_id, homework_title, homework_due_date, date_created)
+    def __init__(self, user_name, class_id, homework_title, homework_due_date, date_created):
         self.user_name = user_name
         self.class_id = class_id
         self.homework_title = homework_title

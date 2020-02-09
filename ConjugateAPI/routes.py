@@ -2,12 +2,10 @@ import os
 import json
 from datetime import date
 from flask import request, jsonify
-from app import app
+from ConjugateAPI import app
 import requests
 import flask_migrate
 from flask_sqlalchemy import SQLAlchemy
-
-app = Flask(__name__)
 
 db = SQLAlchemy(app)
 migrate = flask_migrate.Migrate(app, db)
