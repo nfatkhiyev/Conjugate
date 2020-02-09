@@ -1,0 +1,4 @@
+flask
+requests
+flask_migrate
+flask_sqlalchemy

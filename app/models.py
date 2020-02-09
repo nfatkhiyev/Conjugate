@@ -25,10 +25,12 @@ class Homeworks(db.model):
     class_id = Column(Integer, nullable = False)
     homework_title = Column(Integer, nullable = False)
     homework_due_date = Column(Integer, nullable = False)
+    date_created = Column(Integer, nullable = False)
 
-    def __init__(self, user_name, class_id, homework_title, homework_due_date)
+    def __init__(self, user_name, class_id, homework_title, homework_due_date, date_created)
         self.user_name = user_name
         self.class_id = class_id
         self.homework_title = homework_title
         self.homework_due_date = homework_due_date
+        self.date_created = date_created
     
