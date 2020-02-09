@@ -51,7 +51,7 @@ def add_homework():
     db.session.commit()
     db.session.expire(homeowrk)
 
-    return "homework added to db"
+    return "homework added to db", 200
 
 @app.route("/remove_homework")
 def remove_homework():
@@ -62,13 +62,13 @@ def remove_homework():
     homework = Homeworks.query.filter(Homeworks.user_name == user_name).filter(Homeworks.homework_id == homework_id).first()
 
     if homework == None:
-        return "User not authorized to remove this homework"
+        return "User not authorized to remove this homework", 403
 
     db.session.delete(homework)
     db.session.flush()
     db.session.commit()
 
-    return "Homework has been deleted"
+    return "Homework has been deleted", 200
 
 @app.route("/get_homework/<string:user_name>")
 def get_homework(user_name):
@@ -87,7 +87,7 @@ def get_homework(user_name):
         json.update(hw_json)
         count+=count
 
-    return json
+    return json, 200
 
 @app.route("/check_homework/<int:date>")
 def check_homework(date):
@@ -99,17 +99,17 @@ def check_homework(date):
 
     date = str(date)
     date = datetime(year=int(date[0:4]), month=int(date[4:6]), day=int(date[6:8]))
-    
+
     get_class_id(class_name, class_start_time, class_end_time, class_building, class_room_number)
     matched_homeworks = Homeworks.query.filter(Homeworkds.class_id == class_id).filter(Homeworks.date_created == date).all()
     
     if matched_homeworks == None:
         json = {"created_assignments":str(0)}
-        return json
+        return json, 200
         
     json = {"created_assignments":str(matched_homeworks.len())}
 
-    return json
+    return json, 200
 
 
 def get_class_id(class_name, class_start_time, class_end_time, class_building, class_room_number):
