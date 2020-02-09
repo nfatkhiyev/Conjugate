@@ -44,7 +44,7 @@ def add_homework():
         matched_class = Classes.query.order_by(Classes.class_id.desc()).first()
 
     class_id = matched_class.class_id
-    homework = Homeworks(user_name, class_id, homework_title, homework_due_date, current_date.strftime("%d%m%y"))
+    homework = Homeworks(user_name, class_id, homework_title, homework_due_date, current_date)
 
     db.session.add(homework)
     db.session.flush()
@@ -96,6 +96,10 @@ def check_homework(date):
     class_end_time = body['class_end_time']
     class_building = body['class_building']
     class_room_number = body['class_room_number']
+
+    date = str(date)
+    date = datetime(year=int(date[0:4]), month=int(date[4:6]), day=int(date[6:8]))
+    
     get_class_id(class_name, class_start_time, class_end_time, class_building, class_room_number)
     matched_homeworks = Homeworks.query.filter(Homeworkds.class_id == class_id).filter(Homeworks.date_created == date).all()
     
@@ -115,6 +119,6 @@ def get_class_id(class_name, class_start_time, class_end_time, class_building, c
         .filter(Classes.class_end_time == class_end_time) \
         .filter(Classes.class_building == class_building) \
         .filter(Classes.class_room_number).first()
-        
+
     class_id = matched_class.class_id
     return class_id

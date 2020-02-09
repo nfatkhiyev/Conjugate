@@ -25,7 +25,7 @@ class Homeworks(db.Model):
     class_id = Column(Integer, nullable = False)
     homework_title = Column(Text, nullable = False)
     homework_due_date = Column(Integer, nullable = False)
-    date_created = Column(Integer, nullable = False)
+    date_created = Column(Date, nullable = False)
 
     def __init__(self, user_name, class_id, homework_title, homework_due_date, date_created):
         self.user_name = user_name
