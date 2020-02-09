@@ -28,7 +28,13 @@ def add_homework():
 
     current_date = date.today()
 
-    matched_class = Classes.query.filter(Classes.class_name == class_name).filter(Classes.class_start_time == class_start_time).filter(Classes.class_end_time == class_end_time).filter(Classes.class_building == class_building).filter(Classes.class_room_number).all()
+    matched_class = Classes.query \
+        .filter(Classes.class_name == class_name) \
+        .filter(Classes.class_start_time == class_start_time) \
+        .filter(Classes.class_end_time == class_end_time) \
+        .filter(Classes.class_building == class_building) \
+        .filter(Classes.class_room_number).all()
+
     if matched_class == None:
         new_class = Classes(class_name, class_start_time, class_end_time, class_building, class_room_number)
         db.session.add(new_class)
@@ -103,6 +109,12 @@ def check_homework(date):
 
 
 def get_class_id(class_name, class_start_time, class_end_time, class_building, class_room_number):
-    matched_class = Classes.query.filter(Classes.class_name == class_name).filter(Classes.class_start_time == class_start_time).filter(Classes.class_end_time == class_end_time).filter(Classes.class_building == class_building).filter(Classes.class_room_number).first()
+    matched_class = Classes.query \
+        .filter(Classes.class_name == class_name) \
+        .filter(Classes.class_start_time == class_start_time) \
+        .filter(Classes.class_end_time == class_end_time) \
+        .filter(Classes.class_building == class_building) \
+        .filter(Classes.class_room_number).first()
+        
     class_id = matched_class.class_id
     return class_id

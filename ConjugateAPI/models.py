@@ -23,7 +23,7 @@ class Homeworks(db.Model):
     homeworks_id = Column(Integer, primary_key=True)
     user_name = Column(Text, nullable = False)
     class_id = Column(Integer, nullable = False)
-    homework_title = Column(Integer, nullable = False)
+    homework_title = Column(Text, nullable = False)
     homework_due_date = Column(Integer, nullable = False)
     date_created = Column(Integer, nullable = False)
 
