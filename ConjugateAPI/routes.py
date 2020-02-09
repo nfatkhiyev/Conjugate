@@ -64,7 +64,7 @@ def remove_homework():
 
     return "Homework has been deleted"
 
-@app.route("/get_homework/<string:user_name>", methods=["POST"])
+@app.route("/get_homework/<string:user_name>")
 def get_homework(user_name):
     homeworks = Homeworks.query.filter_by(user_name=user_name).all()
 
