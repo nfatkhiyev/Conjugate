@@ -40,7 +40,7 @@ def add_homework():
         matched_class = Classes.query.order_by(Classes.class_id.desc()).first()
 
     class_id = matched_class.class_id
-    homework = Homeworks(user_name, class_id, homework_title, homework_due_date, current_date.strftime(%d%m%y))
+    homework = Homeworks(user_name, class_id, homework_title, homework_due_date, current_date.strftime("%d%m%y"))
 
     db.session.add(homework)
     db.session.flush()
