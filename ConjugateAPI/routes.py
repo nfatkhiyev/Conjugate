@@ -26,7 +26,10 @@ def add_homework():
     homework_title = body['homework_title']
     homework_due_date = body['homework_due_date']
 
+    #pass without slashes. ex. ddmmyyyy
     current_date = date.today()
+    due_date = str(due_date)
+    due_date = datetime(year=int(due_date[0:4]), month=int(due_date[4:6]), day=int(due_date[6:8]))
 
     matched_class = Classes.query \
         .filter(Classes.class_name == class_name) \
@@ -82,7 +85,7 @@ def get_homework(user_name):
         hw_json = { "homework_"+str(count): [{
                     "Title":str(homework.homework_title),
                     "Class":str(class_info.class_name),
-                    "Due":str(homework.homework_due_date),
+                    "Due":homework.homework_due_date.strftime(%d/%m/%y),
                     }]}
         json.update(hw_json)
         count+=count
