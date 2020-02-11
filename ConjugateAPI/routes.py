@@ -85,7 +85,7 @@ def get_homework(user_name):
         hw_json = { "homework_"+str(count): [{
                     "Title":str(homework.homework_title),
                     "Class":str(class_info.class_name),
-                    "Due":homework.homework_due_date.strftime(%d/%m/%y),
+                    "Due":homework.homework_due_date.strftime("%d/%m/%y"),
                     }]}
         json.update(hw_json)
         count+=count
