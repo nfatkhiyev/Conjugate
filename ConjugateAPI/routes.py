@@ -26,10 +26,10 @@ def add_homework():
     homework_title = body['homework_title']
     homework_due_date = body['homework_due_date']
 
-    #pass without slashes. ex. ddmmyyyy
+    #pass without slashes. ex. yyyymmdd
     current_date = date.today()
-    due_date = str(due_date)
-    due_date = datetime(year=int(due_date[0:4]), month=int(due_date[4:6]), day=int(due_date[6:8]))
+    #due_date = homework_due_date
+    #due_date = datetime(year=int(due_date[0:4]), month=int(due_date[4:6]), day=int(due_date[6:8]))
 
     matched_class = Classes.query \
         .filter(Classes.class_name == class_name) \
