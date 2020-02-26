@@ -36,9 +36,11 @@ def add_homework():
         .filter(Classes.class_start_time == class_start_time) \
         .filter(Classes.class_end_time == class_end_time) \
         .filter(Classes.class_building == class_building) \
-        .filter(Classes.class_room_number).all()
+        .filter(Classes.class_room_number == class_room_number) \
+        .first()
+    print(matched_class)
 
-    if matched_class == None:
+    if matched_class == None or matched_class == []:
         new_class = Classes(class_name, class_start_time, class_end_time, class_building, class_room_number)
         db.session.add(new_class)
         db.session.flush()
@@ -52,17 +54,21 @@ def add_homework():
     db.session.add(homework)
     db.session.flush()
     db.session.commit()
-    db.session.expire(homeowrk)
+    db.session.expire(homework)
 
-    return "homework added to db", 200
+    homework_id = Homeworks.query.order_by(Homeworks.homeworks_id.desc()).first().homeworks_id
+
+    return_json = { "homeworks_id": str(homework_id) }
+
+    return return_json, 200
 
 @app.route("/remove_homework")
 def remove_homework():
     body = request.json
-    homework_id = body['homework_id']
+    homeworks_id = body['homework_id']
     user_name = body['user_name']
 
-    homework = Homeworks.query.filter(Homeworks.user_name == user_name).filter(Homeworks.homework_id == homework_id).first()
+    homework = Homeworks.query.filter(Homeworks.user_name == user_name).filter(Homeworks.homeworks_id == homeworks_id).first()
 
     if homework == None:
         return "User not authorized to remove this homework", 403
@@ -83,6 +89,7 @@ def get_homework(user_name):
     for homework in homeworks:
         class_info = Classes.query.filter_by(class_id=homework.class_id).first()
         hw_json = { "homework_"+str(count): [{
+                    "homeworks_id":str(homework.homeworks_id),
                     "Title":str(homework.homework_title),
                     "Class":str(class_info.class_name),
                     "Due":homework.homework_due_date.strftime("%d/%m/%y"),
