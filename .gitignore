@@ -1,3 +1,5 @@
 .idea
 .vscode
 venv
+__pycache__
+ConjugateAPI/__pycache__
