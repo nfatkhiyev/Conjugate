@@ -1,6 +1,6 @@
 import os
 import json
-from datetime import date
+from datetime import date, datetime
 from flask import request, jsonify
 from ConjugateAPI import app
 import requests
@@ -10,7 +10,7 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy(app)
 migrate = flask_migrate.Migrate(app, db)
 
-from ConjugateAPI.models import *
+from ConjugateAPI.models import Classes, Homeworks, User
 
 requests.packages.urllib3.disable_warnings()
 
@@ -30,7 +30,6 @@ def add_homework():
     current_date = date.today()
     #due_date = homework_due_date
     #due_date = datetime(year=int(due_date[0:4]), month=int(due_date[4:6]), day=int(due_date[6:8]))
-
     matched_class = Classes.query \
         .filter(Classes.class_name == class_name) \
         .filter(Classes.class_start_time == class_start_time) \
@@ -101,6 +100,7 @@ def get_homework(user_name):
 
 @app.route("/check_homework/<int:date>")
 def check_homework(date):
+    body = request.json
     class_name = body['class_name']
     class_start_time = body['class_start_time']
     class_end_time = body['class_end_time']
@@ -110,8 +110,8 @@ def check_homework(date):
     date = str(date)
     date = datetime(year=int(date[0:4]), month=int(date[4:6]), day=int(date[6:8]))
 
-    get_class_id(class_name, class_start_time, class_end_time, class_building, class_room_number)
-    matched_homeworks = Homeworks.query.filter(Homeworkds.class_id == class_id).filter(Homeworks.date_created == date).all()
+    class_id = get_class_id(class_name, class_start_time, class_end_time, class_building, class_room_number)
+    matched_homeworks = Homeworks.query.filter(Homeworks.class_id == class_id).filter(Homeworks.date_created == date).all()
     
     if matched_homeworks == None:
         json = {"created_assignments":str(0)}
