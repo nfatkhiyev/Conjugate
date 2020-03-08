@@ -91,7 +91,7 @@ def callback():
     user = User(unique_id, users_name, users_email)
 
     if not get_user(unique_id):
-        User.create(user)
+        create_user(user)
 
     login_user(user)
     return "fuck this works?"
