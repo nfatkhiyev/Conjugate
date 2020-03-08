@@ -6,3 +6,4 @@ app = Flask(__name__)
 app.config.from_object(config)
 
 from ConjugateAPI import routes
+from ConjugateAPI import auth
