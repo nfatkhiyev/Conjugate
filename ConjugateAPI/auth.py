@@ -3,7 +3,7 @@ from ConjugateAPI import app
 import json
 import os
 import sqlite3
-from flask import Flask, redirect, request, url_for
+from flask import Flask, redirect, request, url_for, g
 from flask_login import (
     LoginManager,
     current_user,
@@ -34,8 +34,10 @@ client = WebApplicationClient(GOOGLE_CLIENT_ID)
 
 
 @login_manager.user_loader
-def load_usesr(user_id):
-    return get_user(user_id)
+def load_user(user_id):
+    if get_user(user_id):
+        return get_user(user_id)
+    return None
 
 
 @app.route("/login")
@@ -55,7 +57,6 @@ def login():
 @login_required
 def logout():
     logout_user()
-    current_user.deauthenticate()
     return "logout successful"
 
 
@@ -101,8 +102,6 @@ def callback():
     if not get_user(unique_id):
         create_user(user)
 
-    user.authenticate()
-
     login_user(user)
 
     return "fuck this works?"
@@ -117,7 +116,7 @@ def is_user_authenticated():
 
 
 def get_user(user_id):
-    user = User.query.filter_by(id=user_id).first()
+    user = User.query.filter_by(email=user_id).first()
     return user
 
 

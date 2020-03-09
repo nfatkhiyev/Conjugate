@@ -53,32 +53,23 @@ class User(db.Model):
     id = Column(TEXT, primary_key=True)
     user_name = Column(TEXT, nullable=False)
     email = Column(TEXT, unique=True, nullable=False)
-    authenticated = Column(Boolean, nullable=False)
 
     def __init__(self, id, user_name, email):
         self.id = id
         self.user_name = user_name
         self.email = email
-        self.authenticated = False
 
+    @staticmethod
     def is_active(self):
         return True
 
+    @staticmethod
     def is_anonymous(self):
         return False
 
     def get_id(self):
-        return self.email
+        return str(self.email, "utf-8")
 
+    @staticmethod
     def is_authenticated(self):
-        return self.authenticated
-
-    def authenticate(self):
-        self.authenticated = True
-        db.session.commit()
-        db.session.flush()
-
-    def deauthenticate(self):
-        self.authenticated = False
-        db.session.commit()
-        db.session.flush()
+        return True
