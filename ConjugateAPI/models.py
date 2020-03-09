@@ -50,7 +50,7 @@ class Homeworks(db.Model):
 
 class User(db.Model):
     __tablename__ = "user"
-    id = Column(Integer, primary_key=True)
+    id = Column(TEXT, primary_key=True)
     user_name = Column(TEXT, nullable=False)
     email = Column(TEXT, unique=True, nullable=False)
 
