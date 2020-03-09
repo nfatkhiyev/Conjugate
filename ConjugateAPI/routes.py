@@ -109,7 +109,7 @@ def remove_homework():
 
 @app.route("/get_homework/<string:user_email>")
 def get_homework(user_email):
-    if is_user_authenticated():
+    if current_user.is_authenticated:
         homeworks = Homeworks.query.filter_by(user_email=user_email).all()
 
         json = {"user_name": str(current_user.user_name)}
