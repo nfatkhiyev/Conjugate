@@ -53,12 +53,13 @@ class User(db.Model):
     id = Column(TEXT, primary_key=True)
     user_name = Column(TEXT, nullable=False)
     email = Column(TEXT, unique=True, nullable=False)
-    authenticated = Column(Boolean, nullable=False, default=False)
+    authenticated = Column(Boolean, nullable=False)
 
     def __init__(self, id, user_name, email):
         self.id = id
         self.user_name = user_name
         self.email = email
+        self.authenticated = False
 
     def is_active(self):
         return True
