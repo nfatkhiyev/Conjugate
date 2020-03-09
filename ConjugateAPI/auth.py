@@ -116,7 +116,7 @@ def is_user_authenticated():
 
 
 def get_user(user_id):
-    user = User.query.filter_by(email=user_id).first()
+    user = User.query.filter_by(id=user_id).first()
     return user
 
 

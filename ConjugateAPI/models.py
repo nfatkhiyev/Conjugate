@@ -50,7 +50,7 @@ class Homeworks(db.Model):
 
 class User(db.Model):
     __tablename__ = "user"
-    id = Column(TEXT, primary_key=True)
+    id = Column(Integer, primary_key=True)
     user_name = Column(TEXT, nullable=False)
     email = Column(TEXT, unique=True, nullable=False)
 
@@ -68,7 +68,7 @@ class User(db.Model):
         return False
 
     def get_id(self):
-        return str(self.email, "utf-8")
+        return self.id
 
     @staticmethod
     def is_authenticated(self):
