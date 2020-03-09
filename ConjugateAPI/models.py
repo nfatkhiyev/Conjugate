@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, Text, Date
+from sqlalchemy import Column, Integer, Text, Date, Boolean
 from sqlalchemy.dialects.postgresql import TEXT, DATE
 from flask_login import UserMixin
 
@@ -32,16 +32,16 @@ class Classes(db.Model):
 class Homeworks(db.Model):
     __tablename__ = "homeworks"
     homeworks_id = Column(Integer, primary_key=True)
-    user_name = Column(TEXT, nullable=False)
+    user_email = Column(TEXT, nullable=False)
     class_id = Column(Integer, nullable=False)
     homework_title = Column(TEXT, nullable=False)
     homework_due_date = Column(Integer, nullable=False)
     date_created = Column(DATE, nullable=False)
 
     def __init__(
-        self, user_name, class_id, homework_title, homework_due_date, date_created
+        self, user_email, class_id, homework_title, homework_due_date, date_created
     ):
-        self.user_name = user_name
+        self.user_email = user_email
         self.class_id = class_id
         self.homework_title = homework_title
         self.homework_due_date = homework_due_date
@@ -53,6 +53,7 @@ class User(db.Model):
     id = Column(TEXT, primary_key=True)
     user_name = Column(TEXT, nullable=False)
     email = Column(TEXT, unique=True, nullable=False)
+    authenticated = Column(Boolean, nullable=False, default=False)
 
     def __init__(self, id, user_name, email):
         self.id = id
@@ -69,4 +70,14 @@ class User(db.Model):
         return self.email
 
     def is_authenticated(self):
-        return True
+        return self.authenticated
+
+    def authenticate(self):
+        self.authenticated = True
+        db.session.commit()
+        db.session.flush()
+
+    def deauthenticate(self):
+        self.authenticated = False
+        db.session.commit()
+        db.session.flush()

@@ -51,6 +51,14 @@ def login():
     return redirect(request_uri)
 
 
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    current_user.deauthenticate()
+    return "logout successful"
+
+
 @app.route("/login/callback")
 def callback():
     code = request.args.get("code")
@@ -94,6 +102,9 @@ def callback():
         create_user(user)
 
     login_user(user)
+
+    user.authenticate()
+
     return "fuck this works?"
 
 
