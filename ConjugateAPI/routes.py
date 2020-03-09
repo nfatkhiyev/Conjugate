@@ -17,7 +17,7 @@ from ConjugateAPI.auth import is_user_authenticated
 requests.packages.urllib3.disable_warnings()
 
 
-@app.route("/add_homework", methods=["POST"])
+@app.route("/homework", methods=["POST"])
 def add_homework():
     if is_user_authenticated():
         body = request.json
@@ -85,7 +85,7 @@ def add_homework():
     return "User not logged in", 403
 
 
-@app.route("/remove_homework")
+@app.route("/homework", methods=["DELETE"])
 def remove_homework():
     body = request.json
     homeworks_id = body["homework_id"]
@@ -107,7 +107,7 @@ def remove_homework():
     return "Homework has been deleted", 200
 
 
-@app.route("/get_homework/<string:user_email>")
+@app.route("/homework/<string:user_email>")
 def get_homework(user_email):
     if current_user.is_authenticated:
         homeworks = Homeworks.query.filter_by(user_email=user_email).all()

@@ -101,9 +101,9 @@ def callback():
     if not get_user(unique_id):
         create_user(user)
 
-    login_user(user)
-
     user.authenticate()
+
+    login_user(user)
 
     return "fuck this works?"
 
