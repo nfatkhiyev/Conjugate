@@ -109,28 +109,30 @@ def remove_homework():
 
 @app.route("/get_homework/<string:user_email>")
 def get_homework(user_email):
-    homeworks = Homeworks.query.filter_by(user_email=user_email).all()
+    if is_user_authenticated():
+        homeworks = Homeworks.query.filter_by(user_email=user_email).all()
 
-    json = {"user_name": str(current_user.user_name)}
+        json = {"user_name": str(current_user.user_name)}
 
-    count = 0
-    for homework in homeworks:
-        class_info = Classes.query.filter_by(class_id=homework.class_id).first()
-        hw_json = {
-            "homework_"
-            + str(count): [
-                {
-                    "homeworks_id": str(homework.homeworks_id),
-                    "Title": str(homework.homework_title),
-                    "Class": str(class_info.class_name),
-                    "Due": homework.homework_due_date.strftime("%d/%m/%y"),
-                }
-            ]
-        }
-        json.update(hw_json)
-        count += count
+        count = 0
+        for homework in homeworks:
+            class_info = Classes.query.filter_by(class_id=homework.class_id).first()
+            hw_json = {
+                "homework_"
+                + str(count): [
+                    {
+                        "homeworks_id": str(homework.homeworks_id),
+                        "Title": str(homework.homework_title),
+                        "Class": str(class_info.class_name),
+                        "Due": homework.homework_due_date.strftime("%d/%m/%y"),
+                    }
+                ]
+            }
+            json.update(hw_json)
+            count += count
 
-    return json, 200
+        return json, 200
+    return "Not logged in", 403
 
 
 @app.route("/check_homework/<int:date>")
