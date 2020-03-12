@@ -99,12 +99,9 @@ def remove_homework():
     return "Homework has been deleted", 200
 
 
-@app.route("/homework/<string:user_email>")
+@app.route("/homework")
 @login_required
-def get_homework(user_email):
-    if user_email != current_user.email:
-        return "incorrect user"
-
+def get_homework():
     homeworks = Homeworks.query.filter_by(user_email=user_email).all()
 
     json = {"user_name": str(current_user.user_name)}
