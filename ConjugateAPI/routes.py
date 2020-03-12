@@ -21,7 +21,6 @@ requests.packages.urllib3.disable_warnings()
 @login_required
 def add_homework():
     body = request.json
-    user_email = body["user_email"]
     class_name = body["class_name"]
     class_start_time = body["class_start_time"]
     class_end_time = body["class_end_time"]
@@ -30,55 +29,51 @@ def add_homework():
     homework_title = body["homework_title"]
     homework_due_date = body["homework_due_date"]
 
-    if current_user.email == user_email:
+    # pass without slashes. ex. yyyymmdd
+    current_date = date.today()
+    # due_date = homework_due_date
+    # due_date = datetime(year=int(due_date[0:4]), month=int(due_date[4:6]), day=int(due_date[6:8]))
+    matched_class = (
+        Classes.query.filter(Classes.class_name == class_name)
+        .filter(Classes.class_start_time == class_start_time)
+        .filter(Classes.class_end_time == class_end_time)
+        .filter(Classes.class_building == class_building)
+        .filter(Classes.class_room_number == class_room_number)
+        .first()
+    )
+    print(matched_class)
 
-        # pass without slashes. ex. yyyymmdd
-        current_date = date.today()
-        # due_date = homework_due_date
-        # due_date = datetime(year=int(due_date[0:4]), month=int(due_date[4:6]), day=int(due_date[6:8]))
-        matched_class = (
-            Classes.query.filter(Classes.class_name == class_name)
-            .filter(Classes.class_start_time == class_start_time)
-            .filter(Classes.class_end_time == class_end_time)
-            .filter(Classes.class_building == class_building)
-            .filter(Classes.class_room_number == class_room_number)
-            .first()
+    if matched_class == None or matched_class == []:
+        new_class = Classes(
+            class_name,
+            class_start_time,
+            class_end_time,
+            class_building,
+            class_room_number,
         )
-        print(matched_class)
-
-        if matched_class == None or matched_class == []:
-            new_class = Classes(
-                class_name,
-                class_start_time,
-                class_end_time,
-                class_building,
-                class_room_number,
-            )
-            db.session.add(new_class)
-            db.session.flush()
-            db.session.commit()
-            db.session.expire(new_class)
-            matched_class = Classes.query.order_by(Classes.class_id.desc()).first()
-
-        class_id = matched_class.class_id
-        homework = Homeworks(
-            user_email, class_id, homework_title, homework_due_date, current_date
-        )
-
-        db.session.add(homework)
+        db.session.add(new_class)
         db.session.flush()
         db.session.commit()
-        db.session.expire(homework)
+        db.session.expire(new_class)
+        matched_class = Classes.query.order_by(Classes.class_id.desc()).first()
 
-        homework_id = (
-            Homeworks.query.order_by(Homeworks.homeworks_id.desc()).first().homeworks_id
-        )
+    class_id = matched_class.class_id
+    homework = Homeworks(
+        user_email, class_id, homework_title, homework_due_date, current_date
+    )
 
-        return_json = {"homeworks_id": str(homework_id)}
+    db.session.add(homework)
+    db.session.flush()
+    db.session.commit()
+    db.session.expire(homework)
 
-        return return_json, 200
+    homework_id = (
+        Homeworks.query.order_by(Homeworks.homeworks_id.desc()).first().homeworks_id
+    )
 
-    return "you are not the correct user", 403
+    return_json = {"homeworks_id": str(homework_id)}
+
+    return return_json, 200
 
 
 @app.route("/homework", methods=["DELETE"])
@@ -118,7 +113,7 @@ def get_homework(user_email):
     for homework in homeworks:
         class_info = Classes.query.filter_by(class_id=homework.class_id).first()
         hw_json = {
-            "homework_"
+            "homework"
             + str(count): [
                 {
                     "homeworks_id": str(homework.homeworks_id),
